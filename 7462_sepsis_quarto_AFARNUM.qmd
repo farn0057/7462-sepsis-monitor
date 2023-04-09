@@ -1,0 +1,80 @@
+---
+title: "PUBH7462_Sepsis_Report"
+author: "Ashley Farnum"
+format: html
+editor: visual
+---
+
+## ICU Status Report
+
+#### Time and Date of Report
+
+```{r echo=FALSE}
+current_report_time <- Sys.time()
+current_time_string <- format(current_report_time, "%Y-%m-%d %H:%M:%S")
+current_time_string
+```
+
+```{r echo=FALSE}
+## Calling drive_deauth() prevents R from trying to authenticate via a browser
+## This is needed to make the GitHub Action work
+drive_deauth()
+file_link <- "https://drive.google.com/file/d/1cVTavibXqOJu8QGaWSsIoRh1mjUEPtk-/"
+
+## All data up until now
+new_data <- updateData(file_link)
+
+## Include only most recent data
+most_recent_data <- new_data %>%
+  group_by(PatientID) %>%
+  filter(obsTime == max(obsTime))
+```
+
+### Current Sepsis Patients
+
+```{r}
+#| echo: false
+sepsis_table1<-most_recent_data <- new_data %>%
+  group_by(PatientID) %>%
+  filter(SepsisLabel == "1") %>%
+  filter(obsTime == max(obsTime)) %>%
+   select(PatientID, HR, Resp, Temp, obsTime)
+kable(sepsis_table1)
+```
+
+### Plot of Sepsis Patients HR, Temp, and Resp Rate
+
+```{r}
+library(ggplot2)
+
+sepsis_plot1 <- new_data %>%
+  group_by(PatientID) %>%
+  filter(SepsisLabel == "1") 
+
+ggplot(sepsis_plot1, aes(x = obsTime, y = Temp, group = PatientID)) +
+  geom_point() +
+  ggtitle("Complete History of Temperature for Sepsis Patients")
+
+ggplot(sepsis_plot1, aes(x = PatientID, y = Resp, group = PatientID)) +
+  geom_point() +
+  ggtitle("Complete History of Respiratory Rate for Sepsis Patients")
+
+ggplot(sepsis_plot1, aes(x = obsTime, y = HR, group = PatientID)) +
+  geom_point() +
+  ggtitle("Complete History of Heart Rate for Sepsis Patients")
+  
+```
+
+### Change in Physiological Measurements Table for Sepsis Patients
+
+```{r}
+library(dplyr)
+library(knitr)
+sepsis_phys_change<-new_data%>%
+  group_by(PatientID) %>%
+  filter(SepsisLabel == "1")%>%
+  summarise(HR, Temp, Resp)
+
+ kable(sepsis_phys_change)  
+   
+```
