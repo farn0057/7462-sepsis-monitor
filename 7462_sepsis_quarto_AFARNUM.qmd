@@ -1,11 +1,11 @@
 ---
-title: "PUBH7462_Sepsis_Report"
+title: "PUBH7462_Sepsis_ ICU Report"
 author: "Ashley Farnum"
 format: html
 editor: visual
 ---
 
-## ICU Status Report
+## ICU Status Report for Sepsis Patients
 
 #### Time and Date of Report
 
