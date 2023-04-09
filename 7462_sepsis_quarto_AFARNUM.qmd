@@ -5,7 +5,7 @@ format: html
 editor: visual
 ---
 
-## ICU Status Report
+## ICU Status Report for Sepsis Patients
 
 #### Time and Date of Report
 
