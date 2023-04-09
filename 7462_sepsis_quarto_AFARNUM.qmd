@@ -1,5 +1,5 @@
 ---
-title: "PUBH7462_Sepsis_Report"
+title: "PUBH7462_Sepsis_ ICU Report"
 author: "Ashley Farnum"
 format: html
 editor: visual
